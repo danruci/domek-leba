@@ -1,0 +1,701 @@
+/* Ogólne style */
+:root {
+    --primary-color: #28a745; /* Zielony kolor główny */
+    --secondary-color: #6c757d;
+    --light-bg: #f8f9fa;
+    --dark-text: #343a40;
+    --white-text: #fff;
+    --border-color: #dee2e6;
+    --header-height: 80px;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: var(--dark-text);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #218838; /* Ciemniejszy zielony na hover */
+}
+
+h1, h2, h3 {
+    font-family: 'Montserrat', sans-serif;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 2.5em;
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+/* Przyciski */
+.btn {
+    display: inline-block;
+    padding: 12px 25px;
+    border-radius: 5px;
+    font-size: 1em;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--white-text);
+    border: 2px solid var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: #218838; /* Ciemniejszy zielony */
+    border-color: #218838;
+    transform: translateY(-2px);
+}
+
+.bg-light {
+    background-color: var(--light-bg);
+}
+
+.section {
+    padding: 80px 0;
+}
+
+/* Nagłówek i Nawigacja */
+header.hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('images/lebaplaza.jpg') no-repeat center center/cover;
+    color: var(--white-text);
+    text-align: center;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    padding-top: var(--header-height);
+}
+
+nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 15px 0;
+    z-index: 1000;
+}
+
+nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.8em;
+    font-weight: bold;
+    color: var(--white-text);
+    text-decoration: none;
+}
+
+.nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.nav-links li {
+    margin-left: 30px;
+}
+
+.nav-links a {
+    color: var(--white-text);
+    font-weight: bold;
+    font-size: 1.1em;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: var(--primary-color);
+}
+
+.hamburger {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--white-text);
+    font-size: 1.8em;
+    cursor: pointer;
+}
+
+.hero-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 80px;
+}
+
+.hero-content h1 {
+    font-size: 4em;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.hero-content p {
+    font-size: 1.5em;
+    margin-bottom: 40px;
+}
+
+/* O Domku */
+#about .container {
+    text-align: center;
+}
+
+#about .container h2 {
+    text-align: center;
+}
+
+.about-features {
+    list-style: none;
+    padding-left: 0;
+    display: inline-block;
+    text-align: left;
+}
+
+.about-features li {
+    margin-bottom: 10px;
+    position: relative;
+    padding-left: 25px;
+}
+
+.about-features li::before {
+    content: '\2022';
+    color: var(--primary-color);
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+    position: absolute;
+    left: 0;
+}
+
+/* Galeria */
+#gallery .container p {
+    text-align: center; /* Wyśrodkowuje tekst pod tytułem */
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.gallery-grid img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+/* NOWE STYLE DLA GALERII I MODALU */
+.gallery-grid a {
+    display: block; /* Upewnij się, że link zajmuje całą przestrzeń obrazka */
+    border-radius: 8px; /* Dziedziczy zaokrąglenia z img */
+    overflow: hidden; /* Ukrywa ewentualne wystające krawędzie obrazka */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Cień jak na img */
+    transition: transform 0.3s ease, opacity 0.3s ease; /* Dodano opacity */
+    cursor: pointer; /* Zmienia kursor na wskaźnik */
+}
+
+.gallery-grid a:hover {
+    transform: scale(1.03); /* Powiększenie na hover */
+    opacity: 0.9; /* Lekkie przyciemnienie na hover */
+}
+
+/* Ukryj domyślne style img:hover, ponieważ teraz link obsługuje hover */
+.gallery-grid img:hover {
+    transform: none;
+}
+
+
+/* Style dla Modalu (Lightbox) */
+#lightbox-modal {
+    /* Usunięto wszelkie deklaracje 'display' z CSS.
+       Teraz modal jest ukrywany przez atrybut 'hidden' w HTML
+       i pokazywany przez JavaScript poprzez usunięcie 'hidden'
+       i ustawienie 'display: flex'. */
+    position: fixed; /* Pozycja stała na ekranie */
+    z-index: 2000; /* Wysoko, aby był nad innymi elementami */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Włącz przewijanie, jeśli treść jest większa niż ekran */
+    background-color: rgba(0, 0, 0, 0.9); /* Półprzezroczyste czarne tło */
+    justify-content: center; /* Użyj flexbox do centrowania zawartości */
+    align-items: center;
+    backdrop-filter: blur(5px); /* Delikatne rozmycie tła */
+}
+
+.lightbox-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    max-width: 90vw; /* Maksymalna szerokość modalu */
+    max-height: 90vh; /* Maksymalna wysokość modalu */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#lightbox-image {
+    max-width: 100%;
+    max-height: 80vh; /* Ogranicz wysokość obrazu w modalu */
+    display: block;
+    margin: 0 auto 15px auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    object-fit: contain; /* Obraz będzie dopasowany bez przycinania */
+}
+
+.close-button {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 25px;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: var(--primary-color);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0 10px;
+}
+
+.lightbox-nav-button {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    font-size: 2em;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    opacity: 0.8;
+}
+
+.lightbox-nav-button:hover {
+    background-color: var(--primary-color);
+    transform: scale(1.1);
+    opacity: 1;
+}
+
+#prev-button {
+    margin-left: -50px; /* Przesunięcie przycisków na zewnątrz modalu */
+}
+
+#next-button {
+    margin-right: -50px; /* Przesunięcie przycisków na zewnątrz modalu */
+}
+
+/* Udogodnienia */
+#amenities .container p {
+    text-align: center; /* Wyśrodkowuje tekst pod tytułem */
+}
+
+.amenities-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.amenities-list li {
+    background-color: var(--white-text);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.amenities-list li i {
+    font-size: 2em;
+    margin-bottom: 10px;
+    display: block;
+    color: var(--secondary-color);
+}
+
+/* Lokalizacja */
+#location .container {
+    text-align: center;
+}
+
+#location .container p {
+    text-align: center;
+}
+
+.map-placeholder {
+    width: 100%;
+    height: 450px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.map-placeholder iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+#location ul {
+    list-style: disc;
+    padding-left: 20px;
+    margin-top: 30px;
+    text-align: left;
+    display: inline-block;
+}
+
+#location ul li {
+    margin-bottom: 10px;
+}
+
+/* FAQ */
+.faq-item {
+    background-color: var(--white-text);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    text-align: left;
+}
+
+.faq-item h3 {
+    color: var(--primary-color);
+    font-size: 1.3em;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.faq-item p {
+    color: var(--dark-text);
+    text-align: left;
+}
+
+/* Kontakt */
+#contact .container {
+    text-align: center; /* Wyśrodkowuje cały kontener sekcji Kontakt */
+}
+
+#contact .container p {
+    text-align: center; /* Wyśrodkowuje tekst pod tytułem "Kontakt i Rezerwacja" */
+}
+
+.contact-info {
+    text-align: center; /* Wyśrodkowuje cały blok informacji kontaktowych */
+    margin-top: 40px;
+    font-size: 1.2em;
+}
+
+.contact-info p {
+    margin-bottom: 15px;
+}
+
+.contact-info i {
+    margin-right: 10px;
+    color: var(--primary-color);
+}
+
+.cta-text {
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-top: 40px;
+    color: var(--primary-color);
+}
+
+/* Stopka */
+footer {
+    background-color: var(--dark-text);
+    color: var(--white-text);
+    text-align: center;
+    padding: 25px 0;
+    font-size: 0.9em;
+}
+
+/* ==================================== */
+/* NOWE STYLE DLA PŁYWAJĄCEGO CHATBOTA */
+/* ==================================== */
+
+#chatbot-widget {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1100;
+}
+
+.chat-toggle-button {
+    background-color: var(--primary-color);
+    color: var(--white-text);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.chat-toggle-button:hover {
+    transform: translateY(-3px);
+    background-color: #218838;
+}
+
+.chatbot-container {
+    display: none;
+    position: absolute;
+    bottom: calc(60px + 20px);
+    right: 0;
+    width: 350px;
+    height: 500px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.chatbot-container.active {
+    display: flex;
+}
+
+.chat-header {
+    background-color: var(--primary-color);
+    color: var(--white-text);
+    padding: 15px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-header h3 {
+    margin: 0;
+    font-size: 1.1em;
+}
+
+.close-chat {
+    background: none;
+    border: none;
+    color: var(--white-text);
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 15px;
+    background-color: #e9ecef;
+}
+
+.message {
+    padding: 8px 12px;
+    border-radius: 15px;
+    margin-bottom: 8px;
+    max-width: 85%;
+    word-wrap: break-word;
+    font-size: 0.9em;
+}
+
+.bot-message {
+    background-color: #d1e7dd;
+    color: #0f5132;
+    margin-right: auto;
+    text-align: left;
+}
+
+.user-message {
+    background-color: #cfe2ff;
+    color: #084298;
+    margin-left: auto;
+    text-align: right;
+}
+
+.chat-input {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #eee;
+    background-color: #f0f0f0;
+}
+
+.chat-input input[type="text"] {
+    flex-grow: 1;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 0.9em;
+    margin-right: 8px;
+}
+
+.chat-input button {
+    background-color: var(--primary-color);
+    color: var(--white-text);
+    border: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+}
+
+.chat-input button:hover {
+    background-color: #218838;
+}
+
+
+/* ==================================== */
+/* RESPONSYWNOŚĆ */
+/* ==================================== */
+
+@media (max-width: 992px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        position: absolute;
+        top: var(--header-height);
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.9);
+        padding: 20px 0;
+        text-align: center;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links li {
+        margin: 15px 0;
+    }
+
+    .hamburger {
+        display: block;
+    }
+
+    .hero-content h1 {
+        font-size: 3em;
+    }
+
+    .hero-content p {
+        font-size: 1.2em;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.9em;
+    }
+
+    h2 {
+        font-size: 2em;
+    }
+
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    .section {
+        padding: 50px 0;
+    }
+
+    .contact-info {
+        font-size: 1em;
+    }
+    
+    /* Responsywność dla pływającego chatbota */
+    #chatbot-widget {
+        bottom: 10px;
+        right: 10px;
+    }
+    .chat-toggle-button {
+        width: 50px;
+        height: 50px;
+        font-size: 1.8em;
+    }
+    .chatbot-container {
+        width: calc(100vw - 40px);
+        height: 80vh;
+        bottom: calc(50px + 10px);
+        right: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        font-size: 1.5em;
+    }
+
+    .hero-content h1 {
+        font-size: 2em;
+    }
+
+    .hero-content p {
+        font-size: 0.9em;
+    }
+
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+}
