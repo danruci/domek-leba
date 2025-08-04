@@ -53,8 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatInput = document.getElementById('chat-input');
     const sendButton = document.getElementById('send-button');
 
-    // Twój rzeczywisty URL webhooka z Make.com
-    const MAKE_WEBHOOK_URL = 'https://hook.eu2.make.com/6zipxc66i7kmuijffna2s09y04uuqndb'; 
+    // === UWAGA: Oryginalny URL webhooka został usunięty z kodu w celu bezpieczeństwa.
+    // === Zamiast tego, będziemy używać funkcji proxy na Cloudflare Pages pod adresem /api/chat.
 
     // Funkcja do dodawania wiadomości do czatu
     function addMessage(text, senderClass) {
@@ -71,13 +71,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (messageElement) {
             messageElement.textContent = newText;
             // Usuń wszystkie poprzednie klasy typu wiadomości i dodaj nową
-            messageElement.classList.remove('user-message', 'bot-thinking', 'bot-message', 'error-message'); 
+            messageElement.classList.remove('user-message', 'bot-thinking', 'bot-message', 'error-message');
             messageElement.classList.add(newSenderClass);
             chatMessages.scrollTop = chatMessages.scrollHeight; // Przewiń po aktualizacji
         }
     }
 
-    // Funkcja wysyłająca wiadomość do Make.com
+    // Funkcja wysyłająca wiadomość do Cloudflare Pages Function
     async function sendMessage() {
         const userMessage = chatInput.value.trim();
         if (userMessage === '') return;
@@ -85,10 +85,11 @@ document.addEventListener('DOMContentLoaded', () => {
         addMessage(userMessage, 'user-message');
         chatInput.value = '';
 
-        const thinkingMessageElement = addMessage('...myślę...', 'bot-thinking'); 
+        const thinkingMessageElement = addMessage('...myślę...', 'bot-thinking');
 
         try {
-            const response = await fetch(MAKE_WEBHOOK_URL, {
+            // Zmienione wywołanie fetch, aby używać lokalnego endpointa proxy
+            const response = await fetch('/api/chat', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -96,34 +97,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({ message: userMessage }),
             });
 
-            // Odczytaj strumień odpowiedzi TYLKO RAZ
-            const rawResponseText = await response.text(); 
+            const rawResponseText = await response.text();
 
             if (!response.ok) {
-                throw new Error(`Błąd HTTP! Status: ${response.status} - ${response.statusText}. Odpowiedź serwera: ${rawResponseText.substring(0, 100)}`); // Ogranicz do 100 znaków
+                throw new Error(`Błąd HTTP! Status: ${response.status} - ${response.statusText}. Odpowiedź serwera: ${rawResponseText.substring(0, 100)}`);
             }
 
-            // Próba sparsowania JSON z już odczytanego tekstu
             let data;
             try {
-                // Bardziej agresywne czyszczenie stringu:
-                // 1. trim() usuwa białe znaki z początku/końca
-                // 2. replace() usuwa znaki kontrolne (niewidoczne), które mogą zakłócać parser JSON
-                // 3. encode/decodeURIComponent to często skuteczny sposób na "resetowanie" kodowania i usuwanie problematycznych znaków
                 const cleanedText = decodeURIComponent(encodeURIComponent(rawResponseText.trim().replace(/[\u0000-\u001F\u007F-\u009F]/g, '')));
-                data = JSON.parse(cleanedText); 
+                data = JSON.parse(cleanedText);
             } catch (jsonError) {
                 console.error("Błąd parsowania JSON:", jsonError, "Surowa odpowiedź (po czyszczeniu):", rawResponseText);
                 throw new Error(`Błąd parsowania odpowiedzi JSON. Odpowiedź: ${rawResponseText.substring(0, 100)}`);
             }
-            
-            // Sprawdź, czy pole 'reply' istnieje i nie jest puste
+
             const botReply = data.reply ? String(data.reply) : "Przepraszam, nie otrzymałem konkretnej odpowiedzi od bota. Spróbuj ponownie.";
 
             updateMessage(thinkingMessageElement, botReply, 'bot-message');
 
         } catch (error) {
-            console.error('Błąd wysyłania wiadomości do Make.com:', error);
+            console.error('Błąd wysyłania wiadomości do proxy:', error);
             updateMessage(thinkingMessageElement, `Przepraszam, wystąpił problem z komunikacją: ${error.message || 'Nieznany błąd'}. Spróbuj ponownie.`, 'error-message');
         } finally {
             chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -158,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (chatMessages) {
         // Możesz dodać opóźnienie, jeśli chcesz, aby wiadomość pojawiła się z opóźnieniem
         // setTimeout(() => {
-        //     addMessage('Witaj! Jestem asystentem domku. W czym mogę pomóc?', 'bot-message');
+        //      addMessage('Witaj! Jestem asystentem domku. W czym mogę pomóc?', 'bot-message');
         // }, 500);
         // addMessage('Witaj! Jestem asystentem domku. W czym mogę pomóc?', 'bot-message');
     }
@@ -172,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Pobierz elementy modalu
     const lightboxModal = document.getElementById('lightbox-modal');
     const lightboxImage = document.getElementById('lightbox-image');
-    const closeLightboxButton = document.querySelector('#lightbox-modal .close-button'); // Użyj bardziej specyficznego selektora
+    const closeLightboxButton = document.querySelector('#lightbox-modal .close-button');
     const prevButton = document.getElementById('prev-button');
     const nextButton = document.getElementById('next-button');
 
@@ -180,59 +174,55 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Funkcja otwierająca modal
     const openLightbox = (imageSrc, index) => {
-        lightboxImage.src = imageSrc; // Ustaw źródło pełnowymiarowego zdjęcia
-        currentImageIndex = index; // Zapisz indeks
-        lightboxModal.removeAttribute('hidden'); // WAŻNE: Usuń atrybut hidden, aby modal był widoczny
-        lightboxModal.style.display = 'flex'; // Pokaż modal (użyj flex do centrowania)
-        document.body.style.overflow = 'hidden'; // Zablokuj scrollowanie tła
+        lightboxImage.src = imageSrc;
+        currentImageIndex = index;
+        lightboxModal.removeAttribute('hidden');
+        lightboxModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
     };
 
     // Funkcja zamykająca modal
     const closeLightbox = () => {
-        lightboxModal.style.display = 'none'; // Ukryj modal
-        lightboxModal.setAttribute('hidden', ''); // WAŻNE: Dodaj atrybut hidden z powrotem
-        document.body.style.overflow = ''; // Przywróć scrollowanie tła
+        lightboxModal.style.display = 'none';
+        lightboxModal.setAttribute('hidden', '');
+        document.body.style.overflow = '';
     };
 
     // Funkcja do nawigacji po zdjęciach
     const navigateImages = (direction) => {
-        // Oblicz nowy indeks
         currentImageIndex += direction;
-        // Zawiń indeks, aby przechodzić od ostatniego do pierwszego i odwrotnie
         if (currentImageIndex < 0) {
             currentImageIndex = galleryLinks.length - 1;
         } else if (currentImageIndex >= galleryLinks.length) {
             currentImageIndex = 0;
         }
-        // Ustaw nowe źródło obrazu w modalu
         lightboxImage.src = galleryLinks[currentImageIndex].href;
     };
 
     // Dodaj nasłuchiwanie kliknięć na każdy link w galerii
     galleryLinks.forEach((link, index) => {
         link.addEventListener('click', (e) => {
-            e.preventDefault(); // Zapobiegaj domyślnej akcji linku (przejściu do zdjęcia)
-            openLightbox(link.href, index); // Otwórz modal z klikniętym zdjęciem
+            e.preventDefault();
+            openLightbox(link.href, index);
         });
     });
 
     // Dodaj nasłuchiwanie kliknięć na przycisk zamykania
-    if (closeLightboxButton) { // Sprawdź, czy przycisk istnieje
+    if (closeLightboxButton) {
         closeLightboxButton.addEventListener('click', closeLightbox);
     }
 
     // Dodaj nasłuchiwanie kliknięć na przyciski nawigacyjne
-    if (prevButton) { // Sprawdź, czy przycisk istnieje
-        prevButton.addEventListener('click', () => navigateImages(-1)); // Poprzednie zdjęcie
+    if (prevButton) {
+        prevButton.addEventListener('click', () => navigateImages(-1));
     }
-    if (nextButton) { // Sprawdź, czy przycisk istnieje
-        nextButton.addEventListener('click', () => navigateImages(1)); // Następne zdjęcie
+    if (nextButton) {
+        nextButton.addEventListener('click', () => navigateImages(1));
     }
 
     // Dodaj nasłuchiwanie kliknięć poza obrazem w modalu (aby zamknąć)
-    if (lightboxModal) { // Sprawdź, czy modal istnieje
+    if (lightboxModal) {
         lightboxModal.addEventListener('click', (e) => {
-            // Jeśli kliknięto bezpośrednio na tło modalu (nie na jego zawartość)
             if (e.target === lightboxModal) {
                 closeLightbox();
             }
@@ -241,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Dodaj nasłuchiwanie klawiszy (Esc do zamknięcia, strzałki do nawigacji)
     document.addEventListener('keydown', (e) => {
-        if (lightboxModal && lightboxModal.style.display === 'flex') { // Tylko jeśli modal jest otwarty
+        if (lightboxModal && lightboxModal.style.display === 'flex') {
             if (e.key === 'Escape') {
                 closeLightbox();
             } else if (e.key === 'ArrowLeft') {
